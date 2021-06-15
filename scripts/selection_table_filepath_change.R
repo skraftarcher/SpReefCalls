@@ -14,7 +14,7 @@ change.path<-function(inpath,soundpath,outpath){
     select(-selec.file)
   if(nchar(rvn.dat$`Begin File`)!=nchar(rvn.dat$`Begin Path`)){
     rvn.dat<-rvn.dat%>%
-      separate(sound.files,into=c("pre","sound.files"),sep=nchar(rvn.dat$`Begin File`))
+      separate(`Begin File`,into=c("pre","Begin File"),sep=nchar(rvn.dat$`Begin File`))
   }
   rvn.dat<-rvn.dat%>%
     mutate(`Begin Path`=paste0(soundpath,`Begin Path`))
