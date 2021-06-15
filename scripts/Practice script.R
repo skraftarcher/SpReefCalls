@@ -5,6 +5,6 @@
 source("scripts/selection_table_filepath_change.R")
 
 change.path(inpath="odata",
-            soundpath = "soundfiles",
+            soundpath = here::here("soundfiles"),
             outpath = "wdata")
 
