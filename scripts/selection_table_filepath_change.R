@@ -18,7 +18,7 @@ change.path<-function(inpath,soundpath,outpath){
   }
   rvn.dat<-rvn.dat%>%
     mutate(`Begin Path`=paste0(soundpath,`Begin Path`))
-  write.table(rvn.dat,file = paste0(outpath,"\\",rvn.dat$`Begin File`[1],".txt"), 
+  write.table(rvn.dat,file = paste0(outpath,"/",rvn.dat$`Begin File`[1],".txt"), 
               sep = "\t", row.names = FALSE, quote = FALSE)
 }
 
