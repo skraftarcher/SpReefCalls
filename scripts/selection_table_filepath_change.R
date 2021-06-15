@@ -12,7 +12,7 @@ if(!require(tidyverse))install.packages("tidyverse");library(tidyverse)
 change.path<-function(inpath,soundpath,outpath){
   rvn.dat <- imp_raven(warbler.format =  FALSE, all.data=TRUE,path = inpath)%>%
     select(-selec.file)
-  if(nchar(rvn.dat$`Begin File`)!=nchar(rvn.dat$`Begin Path`)){
+  if(nchar(rvn.dat$`Begin File`[1])!=nchar(rvn.dat$`Begin Path`[1])){
     rvn.dat<-rvn.dat%>%
       separate(`Begin File`,into=c("pre","Begin File"),sep=nchar(rvn.dat$`Begin File`))
   }
