@@ -5,12 +5,17 @@
 
 if(!require(Rraven))install.package("Rraven");library(Rraven)
 if(!require(warbleR))install.packages("warbleR");library(warbleR)
+if(!require(tidyverse))install.packages("tidyverse");library(tidyverse)
 
 # now write the function
 
 change.path<-function(inpath,soundpath,outpath){
   rvn.dat <- imp_raven(warbler.format =  TRUE, path = inpath)
-  exp_raven(rvn.dat, sound.file.path = soundpath, path = outpath)
+  if(grepl("/",rvn.dat$sound.files[1],fixed=TRUE)){
+    rvn.dat<-rvn.dat%>%
+      separate(sound.files,into=c("pre","sound.files"),sep="/")
+  }
+  exp_raven(rvn.dat2, sound.file.path = soundpath, path = outpath)
 }
 
 
