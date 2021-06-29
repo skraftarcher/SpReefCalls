@@ -3,7 +3,7 @@
 
 # load (install if necessary) required packages
 
-if(!require(Rraven))install.package("Rraven");library(Rraven)
+if(!require(Rraven))install.packages("Rraven");library(Rraven)
 if(!require(warbleR))install.packages("warbleR");library(warbleR)
 if(!require(tidyverse))install.packages("tidyverse");library(tidyverse)
 
