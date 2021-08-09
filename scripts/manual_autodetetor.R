@@ -97,4 +97,11 @@ lb2$corrected.fish.calls<-predict(lm(man.calls~auto.calls+spl.broad,data=lb2))
     geom_abline(aes(intercept=0,slope=1))+
     scale_color_viridis_c())
 
+
+(lbp3<-ggplot(data=lb2)+
+    geom_jitter(aes(x=corrected.fish.calls,y=man.calls,color=spl.broad),size=2,alpha=.5)+
+    geom_abline(aes(intercept=0,slope=1))+
+    scale_color_viridis_c())
+
+
 # yeah that works pretty well
