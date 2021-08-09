@@ -9,12 +9,12 @@ lp(pck="readxl")
 
 #load data
 #snake island dataset
-si<-imp_raven(path="odata",
+si<-imp_raven(path="wdata",
               files="SnakeIslandDectionsToCheck.txt_uptodate.txt",
               all.data = TRUE)
 
 #lions bay dataset
-lb<-imp_raven(path="odata",
+lb<-imp_raven(path="wdata",
               files="LionsBayDectionsToCheck.txt_uptodate.txt",
               all.data = TRUE)
 #look to see if there are values of class & man.class that need to be corrected
