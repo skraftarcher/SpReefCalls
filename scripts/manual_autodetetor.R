@@ -1,24 +1,28 @@
 #comparing manual and auto detections
 
 # load packages
-source("scripts/install_packages_function.R")
-lp(pck="tidyverse")
+source("scripts/install_packages_function.R")# this loads a function to install/load packages
+lp(pck="tidyverse")# installs/loads tidyverse
 lp(pck="Rraven")
 lp(pck="lubridate")
 lp(pck="readxl")
 
 #load data
 #snake island dataset
-si<-imp_raven(path="wdata",
-              files="SnakeIslandDectionsToCheck.txt_uptodate.txt",
-              all.data = TRUE)
+si<-imp_raven(path="wdata",#where to find the file
+              files="SnakeIslandDectionsToCheck.txt_uptodate.txt", #which file to upload
+              all.data = TRUE)# tells imp_raven to bring in all of the columns
+
 
 #lions bay dataset
 lb<-imp_raven(path="wdata",
               files="LionsBayDectionsToCheck.txt_uptodate.txt",
               all.data = TRUE)
+
+
 #look to see if there are values of class & man.class that need to be corrected
 table(si$`Manual Class`)
+
 #there are three observations with no value in the snake island dataset - have Ariel look at these
 
 table(lb$`Manual Class`)
@@ -27,8 +31,8 @@ table(lb$`Manual Class`)
 #organize data so that we have how many manual fish calls and how many automatically detected fish calls 
 # there are per minute
 
-si2<-si%>%
-  separate(`Begin File`,into=c("st","dt","ext"),sep=c(-16,-4))%>%
+si2<-si%>%# creates an object called si2 and tells R we want to store the output there
+  separate(`Begin File`,into=c("st","dt","ext"),sep=c(-16,-4))%>%#split the begin file variable into 3 columns - the soundtrap ID, the date time info, and the file extension
   mutate(dt=ymd_hms(dt),
          call.dt=dt+`File Offset (s)`,
          yr=year(call.dt),
@@ -86,6 +90,7 @@ theme_update(panel.grid=element_blank())
     geom_jitter(aes(x=man.calls,y=auto.calls,color=spl.broad),size=2,alpha=.5)+
     geom_abline(aes(intercept=0,slope=1))+
     scale_color_viridis_c())
+
 # looks like it might work to correct by broadband spl
 summary(lm(man.calls~auto.calls+spl.broad,data=lb2))
 lb2$corrected.fish.calls<-predict(lm(man.calls~auto.calls+spl.broad,data=lb2))
