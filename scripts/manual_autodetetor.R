@@ -10,7 +10,7 @@ lp(pck="readxl")
 #load data
 #snake island dataset
 si<-imp_raven(path="wdata",#where to find the file
-              files="SnakeIslandDectionsToCheck.txt_uptodate.txt", #which file to upload
+              files="SnakeIslandDectionsToCheck.txt_uptodate_Sept_2021.txt", #which file to upload
               all.data = TRUE)# tells imp_raven to bring in all of the columns
 
 
