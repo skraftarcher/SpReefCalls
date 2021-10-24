@@ -110,3 +110,17 @@ lb2$corrected.fish.calls<-predict(lm(man.calls~auto.calls+spl.broad,data=lb2))
 
 
 # yeah that works pretty well
+
+
+# distribution plot (average call and average detection duration)
+ggplot(data=si,aes(`Delta Time (s)`,fill=`Manual Class`))+
+  geom_density(alpha=.5)+
+  facet_grid(rows=vars(`Manual Class`))+
+  xlim(0,0.5)
+
+# bar graph 
+DTPLot<-si%>%
+  group_by(`Manual Class`)%>%
+  summarise(MDT=mean(`Delta Time (s)`))
+ggplot(data=DTPLot,aes(x=`Manual Class`,y=MDT,fill=`Manual Class`))+
+  geom_bar(stat='identity')
