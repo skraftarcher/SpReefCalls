@@ -10,7 +10,8 @@ lp(pck="readxl")
 #load data
 #snake island dataset
 si<-imp_raven(path="wdata",#where to find the file
-              files="SnakeIslandDectionsToCheck.txt_uptodate.txt", #which file to upload
+              #files="SnakeIslandDectionsToCheck.txt_uptodate_Sept_2021.txt", #which file to upload
+              files="SnakeIslandDectionsToCheck.txt_uptodate.txt",
               all.data = TRUE)# tells imp_raven to bring in all of the columns
 
 
@@ -72,7 +73,12 @@ lb.spl<-read_xlsx("odata/Lion's Bay_SPL_60sec.xlsx")%>%
          spl.mid=`1-10kHz`,spl.high=`10-48kHz`,spl.broad=`20Hz-48kHz`)
 
 #SPL for snake island
-si.spl<-read_rds("odata/snake_island_spl.rds")
+si.spl<-read_rds("odata/snake_island_spl.rds")%>%
+  group_by(yr,mnth,d,hr,mins)%>%
+  summarize(spl.fish=mean(spl.fish),
+            spl.low=mean(spl.low),
+            spl.med=mean(spl.med),
+            spl.broad=mean(spl.broad))
 
 #join spl data to call data
 
@@ -101,23 +107,24 @@ theme_update(panel.grid=element_blank())
 summary(lm(man.calls~auto.calls+spl.broad,data=si2))
 si2$corrected.fish.calls<-predict(lm(man.calls~auto.calls+spl.broad,data=si2))
 
+summary(lm(man.calls~auto.calls+spl.broad,data=lb2))
+lb2$corrected.fish.calls<-predict(lm(man.calls~auto.calls+spl.broad,data=lb2))
+
 # see if this worked
 
 (sip2<-ggplot(data=si2)+
-    geom_jitter(aes(x=corrected.fish.calls,y=auto.calls,color=spl.broad),size=2,alpha=.5)+
+    geom_jitter(aes(y=corrected.fish.calls,x=man.calls,color=spl.broad),size=2,alpha=.5)+
     geom_abline(aes(intercept=0,slope=1))+
     scale_color_viridis_c())
 
 
 (lbp3<-ggplot(data=lb2)+
-    geom_jitter(aes(x=corrected.fish.calls,y=man.calls,color=spl.broad),size=2,alpha=.5)+
+    geom_jitter(aes(y=corrected.fish.calls,x=man.calls,color=spl.broad),size=2,alpha=.5)+
     geom_abline(aes(intercept=0,slope=1))+
     scale_color_viridis_c())
 
 
 # yeah that works pretty well
-<<<<<<< HEAD
-
 
 # distribution plot (average call and average detection duration)
 ggplot(data=si,aes(`Delta Time (s)`,fill=`Manual Class`))+
@@ -131,5 +138,3 @@ DTPLot<-si%>%
   summarise(MDT=mean(`Delta Time (s)`))
 ggplot(data=DTPLot,aes(x=`Manual Class`,y=MDT,fill=`Manual Class`))+
   geom_bar(stat='identity')
-=======
->>>>>>> 467f943ac4f541fa1c94e21dc8accd8c10c337d1
