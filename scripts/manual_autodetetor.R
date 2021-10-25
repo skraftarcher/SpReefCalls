@@ -71,9 +71,14 @@ lb.spl<-read_xlsx("odata/Lion's Bay_SPL_60sec.xlsx")%>%
   select(yr,mnth,d,hr,mins,spl.fish=`20-100Hz`,spl.low=`100-1000Hz`,
          spl.mid=`1-10kHz`,spl.high=`10-48kHz`,spl.broad=`20Hz-48kHz`)
 
+#SPL for snake island
+si.spl<-read_rds("odata/snake_island_spl.rds")
+
 #join spl data to call data
 
 lb2<-left_join(lb2,lb.spl)
+
+si2<-left_join(si2,si.spl)
 
 # make plots
 theme_set(theme_bw())
@@ -82,8 +87,9 @@ theme_update(panel.grid=element_blank())
 
 #Snake Island
 (sip<-ggplot(data=si2)+
-  geom_jitter(aes(x=man.calls,y=auto.calls),size=2,alpha=.5)+
-    geom_abline(aes(intercept=0,slope=1)))
+  geom_jitter(aes(x=man.calls,y=auto.calls,color=spl.broad),size=2,alpha=.5)+
+    geom_abline(aes(intercept=0,slope=1))+
+    scale_color_viridis_c())
 
 #Lions Bay
 (lbp<-ggplot(data=lb2)+
@@ -92,12 +98,12 @@ theme_update(panel.grid=element_blank())
     scale_color_viridis_c())
 
 # looks like it might work to correct by broadband spl
-summary(lm(man.calls~auto.calls+spl.broad,data=lb2))
-lb2$corrected.fish.calls<-predict(lm(man.calls~auto.calls+spl.broad,data=lb2))
+summary(lm(man.calls~auto.calls+spl.broad,data=si2))
+si2$corrected.fish.calls<-predict(lm(man.calls~auto.calls+spl.broad,data=si2))
 
 # see if this worked
 
-(lbp2<-ggplot(data=lb2)+
+(sip2<-ggplot(data=si2)+
     geom_jitter(aes(x=corrected.fish.calls,y=auto.calls,color=spl.broad),size=2,alpha=.5)+
     geom_abline(aes(intercept=0,slope=1))+
     scale_color_viridis_c())
@@ -110,6 +116,7 @@ lb2$corrected.fish.calls<-predict(lm(man.calls~auto.calls+spl.broad,data=lb2))
 
 
 # yeah that works pretty well
+<<<<<<< HEAD
 
 
 # distribution plot (average call and average detection duration)
@@ -124,3 +131,5 @@ DTPLot<-si%>%
   summarise(MDT=mean(`Delta Time (s)`))
 ggplot(data=DTPLot,aes(x=`Manual Class`,y=MDT,fill=`Manual Class`))+
   geom_bar(stat='identity')
+=======
+>>>>>>> 467f943ac4f541fa1c94e21dc8accd8c10c337d1
